@@ -1,0 +1,102 @@
+﻿[
+  {
+    "id": "67ddfd24-35cb-405f-b234-fd762e87a4e3",
+    "name": "Chicken Popcorn",
+    "image": "/images/products/chicken-popcorn-raw.png"
+  },
+  {
+    "id": "10aafada-e08a-4cbb-a7bc-7f22f4840e39",
+    "name": "Katala",
+    "image": "/images/products/katala-fish.jpg"
+  },
+  {
+    "id": "f708bc63-b811-4bb9-a705-c2b1cd9b8c6b",
+    "name": "Chicken Wings",
+    "image": "/images/products/chicken-wings-raw.png"
+  },
+  {
+    "id": "9ec4f8d7-7437-4228-8772-aaf22bf4f1eb",
+    "name": "Chicken 65",
+    "image": "/images/products/chicken-65-raw.png"
+  },
+  {
+    "id": "60ba0c64-800e-48e4-b0f5-63df69fa4382",
+    "name": "Karala Mathi",
+    "image": "/images/products/karala-mathi-fish.jpg"
+  },
+  {
+    "id": "63e04903-3a31-4dce-a956-fba8b74f6734",
+    "name": "Vanjaram",
+    "image": "/images/products/vanjaram-fish.jpg"
+  },
+  {
+    "id": "ca448e15-565c-4b84-8e64-7db773c34d34",
+    "name": "Aiela",
+    "image": "/images/products/aiela-fish.jpg"
+  },
+  {
+    "id": "ed21b2a2-fb1d-4188-94c6-7b9fabdb2e10",
+    "name": "Mavula / Uuli",
+    "image": "/images/products/mavula-fish.jpg"
+  },
+  {
+    "id": "ca4849f7-ac1f-4371-b0b8-755a397706cf",
+    "name": "Chicken Lollipop",
+    "image": "/images/products/chicken-lollipop-raw.png"
+  },
+  {
+    "id": "2e96984e-a9e1-4eeb-bfed-34907a3cddd1",
+    "name": "Breast Boneless",
+    "image": "/images/products/chicken-breast-boneless.jpg"
+  },
+  {
+    "id": "db27961f-2da3-4878-8013-37f4e559922c",
+    "name": "Lollipop (Fresh)",
+    "image": "/images/products/chicken-lollipop.jpg"
+  },
+  {
+    "id": "4eed17d5-bdc2-427b-9400-10117cfdb0f7",
+    "name": "Wings (Fresh)",
+    "image": "/images/products/chicken-wings.jpg"
+  },
+  {
+    "id": "11833980-af64-4a52-a167-1bf6cca2150e",
+    "name": "Biryani Cut Leg Piece",
+    "image": "/images/products/biryani-cut-leg-piece.jpg"
+  },
+  {
+    "id": "af812705-0feb-4aba-b1dd-dcf801d550c7",
+    "name": "Para",
+    "image": "/images/products/para-fish.jpg"
+  },
+  {
+    "id": "c0c0e183-ebaa-46a2-a8f3-37d2c3a0b143",
+    "name": "Gelebi",
+    "image": "/images/products/gelebi-fish.jpg"
+  },
+  {
+    "id": "fdfabf17-9ac7-485c-84ad-5d96230ef5fe",
+    "name": "Nagara",
+    "image": "/images/products/nagara-fish.jpg"
+  },
+  {
+    "id": "532b05c5-7fb4-4f7a-87d1-b8d7dbf57b70",
+    "name": "Manapatu Salai",
+    "image": "/images/products/manapatu-salai-fish.jpg"
+  },
+  {
+    "id": "df214771-9476-4394-99db-6d73a96a7cf2",
+    "name": "Big Blue Nandu",
+    "image": "/images/products/big-blue-nandu.jpg"
+  },
+  {
+    "id": "63abc040-16a5-474a-8f73-4dd99f85a854",
+    "name": "Big Size Eral",
+    "image": "/images/products/big-size-eral.jpg"
+  },
+  {
+    "id": "c2608fe2-f213-4f90-97b9-df3eff1b524f",
+    "name": "Dam Seela",
+    "image": "/images/products/dam-seela-fish.jpg"
+  }
+]

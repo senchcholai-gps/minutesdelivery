@@ -1,0 +1,28 @@
+﻿[
+  {
+    "id": "2e96984e-a9e1-4eeb-bfed-34907a3cddd1",
+    "created_at": "2026-03-17T15:26:40.657773+00:00",
+    "name": "Breast Boneless",
+    "price": 450,
+    "category_id": "c1ebf1cd-744f-4e3b-ad81-69adc23b8d87",
+    "image": "/images/products/chicken-breast-boneless.jpg",
+    "stock": 50,
+    "slug": "breast_boneless",
+    "has_free_delivery": true,
+    "delivery_fee": 0,
+    "delivery_charge": 25,
+    "quantity_options": [],
+    "variant_options": [
+      {
+        "label": "500g",
+        "price": 150
+      },
+      {
+        "label": "1kg",
+        "price": 300
+      }
+    ],
+    "availability": "in_stock",
+    "description": "Tender, skinless boneless chicken breast ΓÇö perfect for grilling, curries, and stir-fry. Cleaned and hygienically packed fresh daily."
+  }
+]
