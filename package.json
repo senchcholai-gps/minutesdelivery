@@ -10,8 +10,7 @@
     "lint": "eslint ."
   },
   "engines": {
-    "node": "20.x",
-    "pnpm": "10.28.2"
+    "node": "20.x"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
