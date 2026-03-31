@@ -14,8 +14,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 async function run() {
     const { data, error } = await supabase
         .from('products')
-        .select('*')
-        .ilike('name', '%chicken breast%');
+        .select('*');
 
     if (error) {
         console.error(error);
