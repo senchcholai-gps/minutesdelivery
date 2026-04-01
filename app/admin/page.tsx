@@ -12,38 +12,27 @@ export default function AdminDashboardPage() {
     totalOrders: 0,
     totalRevenue: 0,
     activeUsers: 0,
+    recentActivity: [] as any[],
   })
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchDashboardData() {
       try {
-        const [
-          { count: productCount },
-          { data: orders, count: orderCount },
-          { count: userCount }
-        ] = await Promise.all([
-          supabase.from("products").select("*", { count: "exact", head: true }),
-          supabase.from("orders").select("total_price", { count: "exact" }),
-          supabase.from("user_profiles").select("*", { count: "exact", head: true })
-        ])
-
-        const revenue = orders?.reduce((sum, order) => sum + (order.total_price || 0), 0) || 0
-
-        setStats({
-          totalProducts: productCount || 0,
-          totalOrders: orderCount || 0,
-          totalRevenue: revenue,
-          activeUsers: userCount || 0,
-        })
+        const res = await fetch("/api/admin/dashboard")
+        if (!res.ok) throw new Error("Failed to fetch dashboard data")
+        const data = await res.json()
+        setStats(data)
       } catch (error) {
-        console.error("Error fetching stats:", error)
+        console.error("Error fetching dashboard data:", error)
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchStats()
+    fetchDashboardData()
+    const interval = setInterval(fetchDashboardData, 5000)
+    return () => clearInterval(interval)
   }, [])
 
   const statCards = [
@@ -115,12 +104,37 @@ export default function AdminDashboardPage() {
               Recent Activity
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-8 text-gray-400">
-              <Clock className="h-10 w-10 mb-3 opacity-20" />
-              <p className="text-sm font-medium">No recent activity</p>
-              <p className="text-xs text-gray-500 mt-1">Orders will appear here as they come in.</p>
-            </div>
+          <CardContent className="max-h-[400px] overflow-y-auto">
+            {stats.recentActivity.length > 0 ? (
+              <div className="space-y-4">
+                {stats.recentActivity.map((activity, index) => (
+                  <div key={index} className="flex items-center justify-between border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-primary/10 p-2 rounded-full text-primary">
+                        <ShoppingBag className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{activity.message}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(activity.created_at).toLocaleString([], {
+                            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-sm font-bold text-gray-900">
+                      ₹{activity.amount}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-gray-400">
+                <Clock className="h-10 w-10 mb-3 opacity-20" />
+                <p className="text-sm font-medium">No recent activity</p>
+                <p className="text-xs text-gray-500 mt-1">Orders will appear here as they come in.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 

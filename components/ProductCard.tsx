@@ -72,11 +72,11 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
 
-      <CardHeader className="p-4 pb-1">
-        <h3 className="text-base font-bold text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">{cleanProductName(product.name)}</h3>
+      <CardHeader className="px-4 pt-2 pb-0">
+        <h3 className="text-sm sm:text-base font-bold mb-0 leading-tight text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">{cleanProductName(product.name)}</h3>
       </CardHeader>
 
-      <CardContent className="px-4 pb-2 space-y-2" onClick={e => e.stopPropagation()}>
+      <CardContent className="px-4 pt-0 pb-2 space-y-1.5" onClick={e => e.stopPropagation()}>
         {/* Variant chips with price */}
         {variants.length > 0 && (
           <div className="flex flex-wrap gap-1.5">

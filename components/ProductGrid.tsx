@@ -5,13 +5,18 @@ import { ProductCard } from "./ProductCard"
 import { ProductSkeleton } from "./Skeleton"
 import { ShoppingBag } from "lucide-react"
 
+interface Variant { label: string; price: number }
+
 interface Product {
   id: string
   name: string
-  price: number
+  price?: number
   image: string
   category_id: string
   stock?: number
+  variant_options: Variant[]
+  delivery_charge?: number
+  availability?: string
 }
 
 interface Category {
@@ -59,7 +64,7 @@ export function ProductGrid({ products, isLoading, categories }: ProductGridProp
             <div key={i} className="h-12 w-32 bg-gray-200 rounded-2xl" />
           ))}
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <ProductSkeleton key={i} />
           ))}
@@ -101,7 +106,7 @@ export function ProductGrid({ products, isLoading, categories }: ProductGridProp
       {/* Product Grid */}
       <div className="min-h-[400px]">
         {filteredProducts.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

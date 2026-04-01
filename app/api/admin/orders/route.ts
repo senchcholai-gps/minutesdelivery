@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server"
 import { verifyAdmin, createServiceClient } from "@/lib/adminCheck"
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const { admin } = await verifyAdmin(request)
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

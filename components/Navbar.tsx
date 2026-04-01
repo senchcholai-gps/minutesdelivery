@@ -61,7 +61,7 @@ export function Navbar() {
 
   return (
     <nav className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${isScrolled ? "shadow-md" : "border-b border-gray-100"}`}>
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
           <Image
@@ -79,14 +79,14 @@ export function Navbar() {
 
 
         {/* Center Nav Links (desktop) */}
-        <div className="hidden md:flex flex-1 items-center justify-center gap-8">
+        <div className="hidden md:flex flex-1 items-center justify-center gap-4 lg:gap-8">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
             return (
               <Link
                 key={href}
                 href={href}
-                className={`relative text-sm font-semibold transition-colors pb-1 ${
+                className={`relative text-sm lg:text-base font-semibold transition-colors pb-1 ${
                   isActive
                     ? "text-primary border-b-2 border-primary"
                     : "text-gray-700 hover:text-primary"
@@ -195,7 +195,7 @@ export function Navbar() {
                   setHeaderQuery("")
                   router.push(`/search?q=${encodeURIComponent(q)}`)
                 }}
-                className="flex items-center gap-2 bg-gray-50 border-2 border-primary/20 rounded-xl px-3 py-1.5 transition-all"
+                className="flex items-center gap-2 bg-gray-50 border-2 border-primary/20 rounded-xl px-3 py-1.5 transition-all flex-1 min-w-0 overflow-hidden"
               >
                 <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
                 <input
@@ -204,7 +204,7 @@ export function Navbar() {
                   onChange={(e) => setHeaderQuery(e.target.value)}
                   placeholder="Search..."
                   autoFocus
-                  className="w-36 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400 font-medium"
+                  className="flex-1 min-w-0 bg-transparent outline-none text-sm text-gray-800 placeholder:text-gray-400 font-medium"
                 />
                 <button
                   type="button"
