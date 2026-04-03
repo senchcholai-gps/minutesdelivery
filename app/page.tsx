@@ -199,7 +199,7 @@ export default function HomePage() {
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                 <div key={i} className="aspect-square bg-white rounded-2xl animate-pulse shadow-sm" />
               ))}
@@ -212,7 +212,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="space-y-16">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {popularProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -243,7 +243,7 @@ export default function HomePage() {
           </div>
 
           {!isLoading && !error && marinatedProducts.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {marinatedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
