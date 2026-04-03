@@ -84,27 +84,33 @@ export default function AdminOrdersPage() {
     return () => clearInterval(intervalId)
   }, [])
 
-  const updateStatus = async (id: string, newStatus: string) => {
-    setUpdatingId(id)
+  const updateStatus = async (rawId: string, newStatus: string) => {
+    if (!rawId) {
+      console.error("[updateStatus] called with empty id — order data:", rawId)
+      toast({ variant: "destructive", title: "Error", description: "Invalid order ID" })
+      return
+    }
+    setUpdatingId(rawId)
     try {
       const { data: { session } } = await supabase.auth.getSession()
+      console.log("[updateStatus] sending id:", rawId, "status:", newStatus)
       const res = await fetch(`/api/admin/order/update-status`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": `Bearer ${session?.access_token}`
         },
-        body: JSON.stringify({ orderId: id, status: newStatus }),
+        body: JSON.stringify({ id: rawId, status: newStatus }),
       })
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}))
         throw new Error(errData.error || "Failed to update status")
       }
       
-      setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o))
+      setOrders(prev => prev.map(o => (o.id ?? o.order_id) === rawId ? { ...o, status: newStatus } : o))
       toast({
         title: "Status Updated",
-        description: `Order #${id.slice(0, 8)} is now ${newStatus}`,
+        description: `Order #${rawId.slice(0, 8).toUpperCase()} is now ${newStatus}`,
       })
     } catch (error: any) {
       toast({
@@ -144,27 +150,33 @@ export default function AdminOrdersPage() {
     }
   }
 
-  const updatePaymentStatus = async (id: string, newStatus: string) => {
-    setUpdatingId(id + "-payment")
+  const updatePaymentStatus = async (rawId: string, newStatus: string) => {
+    if (!rawId) {
+      console.error("[updatePaymentStatus] called with empty id:", rawId)
+      toast({ variant: "destructive", title: "Error", description: "Invalid order ID" })
+      return
+    }
+    setUpdatingId(rawId + "-payment")
     try {
       const { data: { session } } = await supabase.auth.getSession()
+      console.log("[updatePaymentStatus] sending id:", rawId, "status:", newStatus)
       const res = await fetch(`/api/admin/order/update-payment`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
           "Authorization": `Bearer ${session?.access_token}`
         },
-        body: JSON.stringify({ orderId: id, status: newStatus }),
+        body: JSON.stringify({ id: rawId, status: newStatus }),
       })
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}))
         throw new Error(errData.error || "Failed to update payment status")
       }
       
-      setOrders(orders.map(o => o.id === id ? { ...o, payment_status: newStatus } : o))
+      setOrders(prev => prev.map(o => (o.id ?? o.order_id) === rawId ? { ...o, payment_status: newStatus } : o))
       toast({
         title: "Payment Updated",
-        description: `Payment for Order #${id.slice(0, 8)} marked as ${newStatus}`,
+        description: `Payment for Order #${rawId.slice(0, 8).toUpperCase()} marked as ${newStatus}`,
       })
     } catch (error: any) {
       toast({
@@ -291,9 +303,9 @@ export default function AdminOrdersPage() {
                 </tr>
               ) : (
                 filteredOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
+                  <tr key={order.id || order.order_id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-6 py-4">
-                      <p className="font-bold text-gray-900 leading-tight">#{order.id.slice(0,8).toUpperCase()}</p>
+                      <p className="font-bold text-gray-900 leading-tight">#{(order.id || order.order_id).slice(0,8).toUpperCase()}</p>
                       <p className="text-xs text-gray-400 mt-0.5">{new Date(order.created_at).toLocaleDateString()}</p>
                     </td>
                     <td className="px-6 py-4">
@@ -310,8 +322,8 @@ export default function AdminOrdersPage() {
                         <Badge variant="outline" className="w-fit bg-gray-50 font-bold tracking-widest text-[10px] uppercase text-gray-500">{order.payment_method || "COD"}</Badge>
                         <Select 
                           defaultValue={order.payment_status || "pending"} 
-                          onValueChange={(val) => updatePaymentStatus(order.id, val)}
-                          disabled={updatingId === order.id + "-payment"}
+                          onValueChange={(val) => updatePaymentStatus(order.id || order.order_id, val)}
+                          disabled={updatingId === (order.id || order.order_id) + "-payment"}
                         >
                           <SelectTrigger className={`w-[110px] h-7 text-xs border-2 shadow-sm font-bold ${order.payment_status === 'paid' ? 'border-primary text-primary' : 'border-yellow-200 text-yellow-600'}`}>
                             <SelectValue />
@@ -326,8 +338,8 @@ export default function AdminOrdersPage() {
                     <td className="px-6 py-4">
                       <Select 
                         value={order.status} 
-                        onValueChange={(val) => updateStatus(order.id, val)}
-                        disabled={updatingId === order.id}
+                        onValueChange={(val) => updateStatus(order.id || order.order_id, val)}
+                        disabled={updatingId === (order.id || order.order_id)}
                       >
                         <SelectTrigger className="w-[160px] border-none shadow-none focus:ring-0 p-0 h-auto bg-transparent">
                           {getStatusBadge(order.status)}
@@ -349,10 +361,10 @@ export default function AdminOrdersPage() {
                         size="icon"
                         className="h-8 w-8 text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
                         title="Download PDF"
-                        disabled={downloadingPdfId === order.id}
-                        onClick={() => downloadPdf(order.id)}
+                        disabled={downloadingPdfId === (order.id || order.order_id)}
+                        onClick={() => downloadPdf(order.id || order.order_id)}
                       >
-                        {downloadingPdfId === order.id
+                        {downloadingPdfId === (order.id || order.order_id)
                           ? <Loader2 className="h-4 w-4 animate-spin" />
                           : <FileDown className="h-4 w-4" />}
                       </Button>
@@ -364,7 +376,7 @@ export default function AdminOrdersPage() {
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl rounded-2xl border-none shadow-2xl">
                           <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold tracking-tight">Order Details #{order.id.slice(0,8).toUpperCase()}</DialogTitle>
+                            <DialogTitle className="text-2xl font-bold tracking-tight">Order Details #{(order.id || order.order_id).slice(0,8).toUpperCase()}</DialogTitle>
                             <DialogDescription className="text-gray-500 font-medium italic">
                               Complete breakdown of the requested items.
                             </DialogDescription>
