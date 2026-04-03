@@ -106,7 +106,7 @@ export function ProductGrid({ products, isLoading, categories }: ProductGridProp
       {/* Product Grid */}
       <div className="min-h-[400px]">
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

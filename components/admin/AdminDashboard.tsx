@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ShoppingBag, ListOrdered, Users, TrendingUp, DollarSign, Package, Clock } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { supabase } from "@/lib/supabaseClient"
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({

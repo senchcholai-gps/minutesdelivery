@@ -45,25 +45,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   /**
-   * Central function that:
-   * 1. Calls sync-role (auto-assigns role on the server)
-   * 2. Sets isAdmin from the server response
-   * Falls back to reading user_profiles directly if sync-role fails.
+   * Calls sync-role (auto-assigns role on the server via ADMIN_EMAILS list).
+   * If sync-role fails for any reason, defaults to non-admin — never queries
+   * user_profiles directly from the client (avoids RLS 406 errors).
    */
-  async function syncAndSetRole(token: string, userId: string) {
+  async function syncAndSetRole(token: string) {
     const role = await syncRoleWithServer(token);
-
-    if (role !== null) {
-      setIsAdmin(role === "admin");
-    } else {
-      // Fallback: read the profile directly
-      const { data } = await supabase
-        .from("user_profiles")
-        .select("role")
-        .eq("id", userId)
-        .single();
-      setIsAdmin(data?.role === "admin");
-    }
+    setIsAdmin(role === "admin");
   }
 
   useEffect(() => {
@@ -77,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const token = data.session?.access_token;
       setUser(sessionUser);
       if (sessionUser && token) {
-        syncAndSetRole(token, sessionUser.id).finally(() => setLoading(false));
+        syncAndSetRole(token).finally(() => setLoading(false));
       } else {
         setLoading(false);
       }
@@ -90,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (sessionUser && token) {
         // Always re-sync on login events so the role is fresh
-        syncAndSetRole(token, sessionUser.id);
+        syncAndSetRole(token);
       } else {
         setIsAdmin(false);
       }

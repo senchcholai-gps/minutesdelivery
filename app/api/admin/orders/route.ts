@@ -66,8 +66,9 @@ export async function GET(request: Request) {
     }
 
     const enriched = orders?.map((order: any) => ({
-      order_id: order.id,
+      id: order.id,
       customer_name: order.customer_name || profileMap[order.user_id]?.full_name || "Guest",
+      phone: order.phone || profileMap[order.user_id]?.phone || null,
       total: order.total_amount ?? order.total_price ?? 0,
       delivery_charge: order.delivery_charge ?? 0,
       status: order.status,
@@ -75,7 +76,7 @@ export async function GET(request: Request) {
       payment_method: order.payment_method,
       payment_status: order.payment_status,
       transaction_id: order.transaction_id,
-      address: order.delivery_address || order.address || profileMap[order.user_id]?.address_line1,
+      delivery_address: order.delivery_address || order.address || null,
       user_profile: profileMap[order.user_id] || null,
       order_items: order.order_items
     }))

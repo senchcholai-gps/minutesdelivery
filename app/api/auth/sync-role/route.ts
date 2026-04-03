@@ -49,12 +49,12 @@ export async function POST(request: Request) {
     // 3. Update or Insert user_profiles using service role client (bypasses RLS)
     const serviceClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-    // Check if profile exists by email (as requested)
+    // Check if profile exists by email (maybeSingle avoids 406 when no row exists)
     const { data: existingUser } = await serviceClient
       .from("user_profiles")
-      .select("*")
+      .select("id")
       .eq("email", email)
-      .single()
+      .maybeSingle()
 
     let dbError
 
@@ -73,8 +73,7 @@ export async function POST(request: Request) {
           id: user.id, // keep id for completeness but rely on email for relation
           email,
           role,
-          full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
-          updated_at: new Date().toISOString(),
+          full_name: user.user_metadata?.full_name || user.user_metadata?.name || null
         })
       dbError = error
     }

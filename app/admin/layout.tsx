@@ -14,27 +14,9 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+  // Admin validation is now handled server-side in the page components.
 
-  useEffect(() => {
-    async function checkAccess() {
-      const admin = await isAdmin()
-      if (!admin) {
-        router.push("/")
-      } else {
-        setIsAuthorized(true)
-      }
-    }
-    checkAccess()
-  }, [router])
 
-  if (isAuthorized === null) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-primary" />
-      </div>
-    )
-  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut()

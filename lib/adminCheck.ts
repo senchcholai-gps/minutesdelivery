@@ -16,19 +16,23 @@ export function createServiceClient() {
 
 /**
  * CLIENT-SIDE: checks if the current user has the "admin" role.
- * Uses the singleton supabase client to prevent multiple GoTrueClient instances.
+ * Uses the sync-role API (service key) instead of a direct query to avoid RLS 406 errors.
  */
 export async function isAdmin() {
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return false
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session?.access_token) return false
 
-  const { data: profile } = await supabase
-    .from("user_profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single()
-
-  return profile?.role === "admin"
+  try {
+    const res = await fetch("/api/auth/sync-role", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    })
+    if (!res.ok) return false
+    const data = await res.json()
+    return data.role === "admin"
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -67,9 +71,9 @@ export async function verifyAdmin(request: Request) {
       .from("user_profiles")
       .select("role")
       .eq("id", user.id)
-      .single()
+      .maybeSingle()
 
-    if (profileError) {
+    if (profileError && profileError.code !== 'PGRST116') {
       console.error("[AdminAuth] Profile read failed:", profileError.message, "| Code:", profileError.code)
       return { authenticated: true, admin: false, user }
     }
