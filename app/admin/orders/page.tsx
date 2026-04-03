@@ -439,7 +439,9 @@ export default function AdminOrdersPage() {
                             </div>
 
                             <div className="flex justify-between items-center p-4 bg-primary/5 rounded-xl">
-                              <span className="font-bold text-gray-600">Total Paid</span>
+                              <span className="font-bold text-gray-600">
+                                {order.payment_status?.toLowerCase() === 'paid' ? 'Total Paid' : 'Total Amount'}
+                              </span>
                               <span className="text-2xl font-black text-primary tracking-tighter">₹{order.total}</span>
                             </div>
                           </div>

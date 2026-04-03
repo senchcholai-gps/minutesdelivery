@@ -200,7 +200,9 @@ export default function OrdersPage() {
                         <p className="font-bold text-gray-900">{new Date(order.created_at).toLocaleDateString()}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider text-right">Total Paid</p>
+                        <p className="text-sm font-bold text-gray-400 uppercase tracking-wider text-right">
+                          {order.payment_status?.toLowerCase() === 'paid' ? 'Total Paid' : 'Total Amount'}
+                        </p>
                         <p className="font-black text-primary text-xl tracking-tight">₹{order.total}</p>
                       </div>
                     </div>
